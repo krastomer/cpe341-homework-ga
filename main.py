@@ -2,7 +2,7 @@ import random
 import numpy as np
 import time
 import math
-import maplotlib.pyplot as plt
+# import maplotlib.pyplot as plt
 
 BIT_SIZE = 6
 POPULATION_SIZE = 10
@@ -125,6 +125,7 @@ def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossov
     gen_list.append(first_gen)
     output(first_gen, "Gen 0 : Population")
 
+    old = first_gen[0].x
     while repeat < 5:
         gen += 1
         prev_gen = gen_list[-1]
@@ -143,11 +144,14 @@ def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossov
         gen_list.append(present_gen)
 
         output(present_gen, "Gen {} : Population".format(gen))
+        new = present_gen[0].x
 
-        if prev_gen[0].x == present_gen[0].x:
+        if old == new:
             repeat += 1
         else:
             repeat = 0
+            old = new
+        # print(repeat)
 
     return gen_list[-1][0], len(gen_list)
 
@@ -187,6 +191,7 @@ if __name__ == "__main__":
         best_list.append(best_chromosome)
         gen_list.append(gen_stop)
         time_list.append(stop)
+        print()
 
     print('\nSummary\n')
     for i in range(SIMULATION_RUNS):
