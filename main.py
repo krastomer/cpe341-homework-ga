@@ -58,9 +58,12 @@ def fitness_cal(population: list(), min: bool = True):
 
 
 def crossover(p1: Chromosome, p2: Chromosome, point: list(), gen: int):
+    p1_b = True
     child_chromosome = ""
     for i in range(len(p1.bit)):
-        if i not in point:
+        if i in point:
+            p1_b = True if not p1_b else False
+        if p1_b:
             child_chromosome += p1.bit[i]
             continue
         child_chromosome += p2.bit[i]
@@ -113,7 +116,7 @@ def mutation(chromosome: list(), n: int):
         chromosome[i].bit = new_chromosome
 
 
-def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossover_point: list = [1, 3], mutation_rate: float = 0.2, min: bool = True):
+def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossover_point: list = [3], mutation_rate: float = 0.2, min: bool = True):
     gen = 0
     repeat = 0
     gen_list = []
