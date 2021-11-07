@@ -2,6 +2,7 @@ import random
 import numpy as np
 import time
 import math
+import maplotlib.pyplot as plt
 
 BIT_SIZE = 6
 POPULATION_SIZE = 10
@@ -55,9 +56,14 @@ def fitness_cal(population: list(), min: bool = True):
         i.set_fitness(fit)
 
 
-def crossover(p1: Chromosome, p2: Chromosome, point: int, gen: int):
-    c_bit = p1.bit[:point]+p2.bit[point:]
-    child = Chromosome(bit=c_bit, gen=gen)
+def crossover(p1: Chromosome, p2: Chromosome, point: list(), gen: int):
+    child_chromosome = ""
+    for i in range(len(p1.bit)):
+        if i not in point:
+            child_chromosome += p1.bit[i]
+            continue
+        child_chromosome += p2.bit[i]
+    child = Chromosome(bit=child_chromosome, gen=gen)
     child.set_parent(p1, p2)
     return child
 
@@ -86,6 +92,11 @@ def parent_selection(candidate: list(), n: int):
             count_p += 1
             continue
         count_c += 1
+    # position = random.sample(range(0, len(candidate) - 1), n)
+    # parent = list()
+    # for i in range(len(candidate)):
+    #     if i in position:
+    #         parent.append(candidate[i])
 
     return parent
 
@@ -101,7 +112,7 @@ def mutation(chromosome: list(), n: int):
         chromosome[i].bit = new_chromosome
 
 
-def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossover_point: int = 3, mutation_rate: float = 0.1, min: bool = True):
+def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossover_point: list = [1, 3], mutation_rate: float = 0.2, min: bool = True):
     gen = 0
     repeat = 0
     gen_list = []
@@ -180,6 +191,6 @@ if __name__ == "__main__":
     print('\nSummary\n')
     for i in range(SIMULATION_RUNS):
         print('time: {} - chromosome: {} - x: {:>3} - stop: {:>3}'.format(i+1,
-              best_list[i].bit, best_list[i].x, gen_list[i]))
+              best_list[i].bit, best_list[i].x, gen_list[i] - 1))
         print('take time: {}'.format(time_list[i]))
     print('\naverage time: {}'.format(sum(time_list) / SIMULATION_RUNS))
