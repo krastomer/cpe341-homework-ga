@@ -2,6 +2,7 @@ import random
 import numpy as np
 import time
 import math
+import copy
 # import maplotlib.pyplot as plt
 
 BIT_SIZE = 6
@@ -128,8 +129,9 @@ def genetic_algorithm(population_size: int, crossover_rate: float = 0.8, crossov
     old = first_gen[0].x
     while repeat < 5:
         gen += 1
-        prev_gen = gen_list[-1]
-        present_gen = prev_gen[0:population_size - crossover_size]
+        prev_gen = copy.deepcopy(gen_list[-1])
+        present_gen = copy.deepcopy(
+            prev_gen[0:population_size - crossover_size])
         parent = parent_selection(prev_gen, crossover_size)
 
         for i in range(crossover_size):
